@@ -1,0 +1,25 @@
+apply from: '../build_default.gradle'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = 'com.github.FairyHeart'
+
+def cfg = rootProject.ext.android
+def libs = rootProject.ext.dependencies
+
+android {
+    defaultConfig {
+        versionCode cfg.lib_network_version_code
+        versionName cfg.lib_network_version_name
+    }
+}
+
+dependencies {
+    //okHttp
+    api "com.squareup.okhttp3:okhttp:${libs.okhttp_version}"
+    api "com.squareup.okhttp3:mockwebserver:${libs.okhttp_version}"
+
+    //retrofit
+    api "com.squareup.retrofit2:retrofit:${libs.retrofit_version}"
+    api "com.squareup.retrofit2:converter-gson:${libs.retrofit_version}"//转换器，请求结果转换成Model
+    api "com.squareup.retrofit2:adapter-rxjava2:${libs.retrofit_version}"//配合Rxjava 使用
+}
