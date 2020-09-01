@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MeiDa</string>
+
+
+    <string name="ex_network_time_out">网络访问超时，请检查网络是否连接正常</string>
+    <string name="ex_json">Json格式出错</string>
+
+</resources>

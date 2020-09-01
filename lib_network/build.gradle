@@ -11,15 +11,46 @@ android {
         versionCode cfg.lib_network_version_code
         versionName cfg.lib_network_version_name
     }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+        androidTest.resources.srcDirs += 'src/androidTest/res'
+    }
 }
 
 dependencies {
     //okHttp
-    api "com.squareup.okhttp3:okhttp:${libs.okhttp_version}"
-    api "com.squareup.okhttp3:mockwebserver:${libs.okhttp_version}"
+    implementation "com.squareup.okhttp3:okhttp:${libs.okhttp_version}"
+    implementation "com.squareup.okhttp3:mockwebserver:${libs.okhttp_version}"
 
     //retrofit
-    api "com.squareup.retrofit2:retrofit:${libs.retrofit_version}"
-    api "com.squareup.retrofit2:converter-gson:${libs.retrofit_version}"//转换器，请求结果转换成Model
-    api "com.squareup.retrofit2:adapter-rxjava2:${libs.retrofit_version}"//配合Rxjava 使用
+    implementation "com.squareup.retrofit2:retrofit:${libs.retrofit_version}"
+    implementation "com.squareup.retrofit2:converter-gson:${libs.retrofit_version}"//转换器，请求结果转换成Model
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${libs.retrofit_version}"//配合RxJava 使用
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.sourceFiles
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task classesJar(type: Jar) {
+    from "$buildDir/intermediates/classes/release"
+}
+
+artifacts {
+    archives classesJar
+    archives javadocJar
+    archives sourcesJar
 }
