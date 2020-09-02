@@ -5,9 +5,7 @@ ext {
             targetSdkVersion        : 30,
             compileSdkVersion       : 30,
             versionCode             : 100,
-            versionName             : "1.0.0",
-            lib_network_version_code: 101,
-            lib_network_version_name: "1.0.1"
+            versionName             : "1.0.0"
     ]
 
     dependencies = [
