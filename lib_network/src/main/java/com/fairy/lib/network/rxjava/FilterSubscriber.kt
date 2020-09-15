@@ -44,12 +44,26 @@ abstract class FilterSubscriber<T>(private val context: Context) : Observer<T?> 
             if (!error.isNullOrBlank()) {
                 showError(error.toString())
             }
+            this.dealError(t)
         }
     }
 
+    /**
+     * 返回空处理
+     */
     abstract fun onNull()
 
+    /**
+     * 异常展示
+     */
     open fun showError(error: String) {
         Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * 异常处理
+     */
+    open fun dealError(t: Throwable) {
+
     }
 }
