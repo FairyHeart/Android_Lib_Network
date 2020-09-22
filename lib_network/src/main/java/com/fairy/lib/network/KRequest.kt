@@ -1,5 +1,6 @@
 package com.fairy.lib.network
 
+import android.util.Log
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
@@ -21,5 +22,8 @@ private val gson = Gson()
  */
 fun Any.toBody(): RequestBody {
     val param = gson.toJson(this)
+    if (RetrofitConfig.instance.debug) {
+        Log.i(RetrofitConfig.instance.appName, param)
+    }
     return param.toRequestBody(contentType.toMediaTypeOrNull())
 }
