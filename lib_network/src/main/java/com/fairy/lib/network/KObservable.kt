@@ -65,9 +65,9 @@ fun <T> Observable<ResultDto<T>>.filterStatus(
  * @param throwException 是否抛出异常
  */
 @Throws
-fun <T> Observable<ResultDto<T>>.filterStatus(
-    throwException: Boolean = false
-): Observable<Boolean> {
+fun <T> Observable<ResultDto<T>>.filterBoolStatus(
+    throwException: Boolean = true
+): Observable<Boolean?> {
     return this.map { t ->
         if (!t.isSuccess()) {
             if (throwException) {
