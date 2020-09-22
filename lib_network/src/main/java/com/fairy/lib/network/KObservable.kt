@@ -59,3 +59,24 @@ fun <T> Observable<ResultDto<T>>.filterStatus(
 
     })
 }
+
+/**
+ * Observable拓展函数
+ * @param throwException 是否抛出异常
+ */
+@Throws
+fun <T> Observable<ResultDto<T>>.filterStatus(
+    throwException: Boolean = false
+): Observable<Boolean> {
+    return this.map { t ->
+        if (!t.isSuccess()) {
+            if (throwException) {
+                throw NetworkException(code = t.errorCode, message = t.message)
+            } else {
+                false
+            }
+        } else {
+            true
+        }
+    }
+}
