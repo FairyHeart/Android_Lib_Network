@@ -28,10 +28,10 @@ abstract class FilterSubscriber<T>(private val context: Context) : Observer<T?> 
     }
 
     override fun onError(t: Throwable) {
-        t.printStackTrace()
         if (t is ReturnNullException) {
             onNull()
         } else {
+            t.printStackTrace()
             error = if (t is TimeoutException || t is ConnectException) {
                 context.getString(R.string.ex_network_time_out)
             } else if (t is MalformedURLException) {
