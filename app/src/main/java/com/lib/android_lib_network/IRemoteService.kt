@@ -26,6 +26,7 @@ internal interface IRemoteService {
     ): Observable<ResultDto<LoginDto?>>
 
 
+    @Throws
     @POST("weChat/v1/mobile_login")
     fun loginByPhoneLiveData(
         @Body info: RequestBody

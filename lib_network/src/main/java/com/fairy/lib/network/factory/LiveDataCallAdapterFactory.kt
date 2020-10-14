@@ -1,11 +1,12 @@
 package com.fairy.lib.network.factory
 
 import androidx.lifecycle.LiveData
-import com.fairy.lib.network.dto.ResultDto
-import retrofit2.*
+import com.fairy.lib.network.ThreadSchedulers
+import retrofit2.CallAdapter
+import retrofit2.Response
+import retrofit2.Retrofit
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
-import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  *
@@ -13,7 +14,14 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @author: Fairy.
  * @date  : 2020/10/14.
  */
-class LiveDataCallAdapterFactory : CallAdapter.Factory() {
+class LiveDataCallAdapterFactory(
+    /**
+     * 返回函数运行的线程
+     */
+    private val threadSchedulers: ThreadSchedulers = ThreadSchedulers.MAIN_THREAD,
+    private val onFailure: (t: Throwable) -> Unit
+) :
+    CallAdapter.Factory() {
 
     /**
      * Returns a call adapter for interface methods that return `returnType`, or null if it
@@ -39,7 +47,7 @@ class LiveDataCallAdapterFactory : CallAdapter.Factory() {
         } else {
             observableType
         }
-        return LiveDataCallAdapter<Any>(responseType)
+        return LiveDataCallAdapter<Any>(responseType, threadSchedulers, onFailure)
     }
 }
 

@@ -1,7 +1,9 @@
 package com.lib.android_lib_network
 
 import android.app.Application
+import android.widget.Toast
 import com.fairy.lib.network.RetrofitConfig
+import com.fairy.lib.network.ThreadSchedulers
 import com.fairy.lib.network.factory.LiveDataCallAdapterFactory
 import com.lib.network.BuildConfig
 
@@ -25,6 +27,8 @@ class TestApplication : Application() {
                     Pair("version_name", "1.0.0")
                 )
             )
-            .addCallAdapterFactory(LiveDataCallAdapterFactory())
+            .addCallAdapterFactory(LiveDataCallAdapterFactory(ThreadSchedulers.MAIN_THREAD) {
+                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+            })
     }
 }
