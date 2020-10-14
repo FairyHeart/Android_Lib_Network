@@ -20,10 +20,17 @@ android {
     }
 
     buildTypes {
+        debug {
+            minifyEnabled false
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    kotlinOptions {
+        jvmTarget = 1.8
     }
 }
 
@@ -33,8 +40,27 @@ dependencies {
     implementation "androidx.core:core-ktx:${libs.core_ktx_version}"
     implementation "androidx.appcompat:appcompat:${libs.appcompat_version}"
     implementation "androidx.constraintlayout:constraintlayout:${libs.constraintlayout_version}"
+    implementation project(path: ':lib_network')
     testImplementation "junit:junit:${libs.junit_version}"
     androidTestImplementation "androidx.test.ext:junit:${libs.junitx_version}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${libs.espresso_core_version}"
+
+    //GSon
+    implementation "com.google.code.gson:gson:${libs.gson_version}"
+
+    //RxJava
+    implementation "io.reactivex.rxjava2:rxjava:${libs.rxjava_version}"
+    implementation "io.reactivex.rxjava2:rxandroid:${libs.rxandroid_version}"
+
+    //okHttp
+    implementation "com.squareup.okhttp3:okhttp:${libs.okhttp_version}"
+    implementation "com.squareup.okhttp3:mockwebserver:${libs.okhttp_version}"
+
+    //retrofit
+    implementation "com.squareup.retrofit2:retrofit:${libs.retrofit_version}"
+    implementation "com.squareup.retrofit2:converter-gson:${libs.retrofit_version}"//转换器，请求结果转换成Model
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${libs.retrofit_version}"//配合RxJava 使用
+
+    implementation 'androidx.fragment:fragment-ktx:1.2.5'
 
 }

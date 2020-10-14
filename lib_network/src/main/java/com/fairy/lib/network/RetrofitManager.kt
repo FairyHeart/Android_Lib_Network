@@ -63,10 +63,14 @@ class RetrofitManager private constructor() {
             .client(client)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .baseUrl(RetrofitConfig.instance.baseUrl)
+
         if (RetrofitConfig.instance.converterFactory != null) {
-            retrofitBuilder.addConverterFactory(RetrofitConfig.instance.converterFactory)
+            retrofitBuilder.addConverterFactory(RetrofitConfig.instance.converterFactory!!)
         } else {
             retrofitBuilder.addConverterFactory(GsonConverterFactory.create())
+        }
+        if (RetrofitConfig.instance.callAdapterFactory != null) {
+            retrofitBuilder.addCallAdapterFactory(RetrofitConfig.instance.callAdapterFactory!!)
         }
         mRetrofit = retrofitBuilder.build()
     }
@@ -75,8 +79,8 @@ class RetrofitManager private constructor() {
      * 获取对应的Service
      * @param service Service 的 class
      * @param <T>
-     * @return
-    </T> */
+     * @return </T>
+     */
     fun <T> create(service: Class<T>): T {
         return mRetrofit.create(service)
     }

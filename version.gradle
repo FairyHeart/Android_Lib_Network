@@ -9,13 +9,16 @@ ext {
     ]
 
     dependencies = [
-            core_ktx_version        : '1.3.1',
+            core_ktx_version        : '1.3.2',
             appcompat_version       : '1.2.0',
-            constraintlayout_version: '2.0.0',
+            constraintlayout_version: '2.0.2',
             junit_version           : '4.13',
-            junitx_version          : '1.1.1',
-            espresso_core_version   : '3.2.0',
+            junitx_version          : '1.1.2',
+            espresso_core_version   : '3.3.0',
+            gson_version            : '2.8.5',
             okhttp_version          : '4.0.1',
-            retrofit_version        : '2.4.0'
+            retrofit_version        : '2.4.0',
+            rxjava_version          : '2.2.9',
+            rxandroid_version       : '2.0.1'
     ]
 }

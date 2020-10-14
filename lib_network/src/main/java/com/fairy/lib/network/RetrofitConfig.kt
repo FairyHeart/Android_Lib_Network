@@ -1,6 +1,7 @@
 package com.fairy.lib.network
 
 import okhttp3.Interceptor
+import retrofit2.CallAdapter
 import retrofit2.Converter
 
 /**
@@ -60,6 +61,12 @@ class RetrofitConfig private constructor() {
         private set
 
     /**
+     * 添加数据源适配器
+     */
+    var callAdapterFactory: CallAdapter.Factory? = null
+        private set
+
+    /**
      * 是否测试环境
      */
     fun debug(debug: Boolean): RetrofitConfig {
@@ -112,6 +119,14 @@ class RetrofitConfig private constructor() {
      */
     fun addConverterFactory(converterFactory: Converter.Factory): RetrofitConfig {
         this.converterFactory = converterFactory
+        return this
+    }
+
+    /**
+     * 添加数据源适配器
+     */
+    fun addCallAdapterFactory(callAdapterFactory: CallAdapter.Factory): RetrofitConfig {
+        this.callAdapterFactory = callAdapterFactory
         return this
     }
 }
