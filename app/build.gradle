@@ -41,6 +41,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${libs.appcompat_version}"
     implementation "androidx.constraintlayout:constraintlayout:${libs.constraintlayout_version}"
     implementation project(path: ':lib_network')
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     testImplementation "junit:junit:${libs.junit_version}"
     androidTestImplementation "androidx.test.ext:junit:${libs.junitx_version}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${libs.espresso_core_version}"
@@ -62,5 +63,7 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:${libs.retrofit_version}"//配合RxJava 使用
 
     implementation 'androidx.fragment:fragment-ktx:1.2.5'
+
+    implementation 'com.kaopiz:kprogresshud:1.2.0'
 
 }

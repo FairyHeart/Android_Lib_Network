@@ -1,5 +1,7 @@
 package com.fairy.lib.network
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.fairy.lib.network.dto.ResultDto
@@ -10,10 +12,16 @@ import com.fairy.lib.network.exception.ReturnNullException
  * LiveData拓展函数
  */
 @Throws
-fun <T> LiveData<ResultDto<T>>.filterStatus(): LiveData<T?> {
+fun <T> LiveData<ResultDto<T>>.filterStatus(context: Context): LiveData<T?>? {
+
+    if (this.value == null || this.value?.isSuccess() == false) {
+        Toast.makeText(context, this?.value?.message, Toast.LENGTH_LONG).show()
+        return null
+    }
     return Transformations.map(this) {
         if (!it.isSuccess()) {
-            throw NetworkException(code = it.errorCode, message = it.message)
+            Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+            return@map null
         }
         it.data
     }

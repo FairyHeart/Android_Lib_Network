@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.fairy.lib.network.RetrofitManager
+import com.fairy.lib.network.dto.ResultDto
 import com.fairy.lib.network.filterStatus
 import com.fairy.lib.network.rxjava.FilterSubscriber
 import com.fairy.lib.network.toBody
@@ -49,9 +51,31 @@ class TestActivity : AppCompatActivity() {
 
         val viewModel by viewModels<LoginViewModel>()
 
-        viewModel.login().observe(this,
-            Observer<LoginDto?> {
-                tv.text = "${tv.text.toString()}\n${it.toString()}"
-            })
+        viewModel.loading.observe(this, LoadingObserver(this))
+
+        viewModel.loading.value = true
+
+        /* viewModel.login2().observe(this,
+             Observer<LoginDto?> {
+                 tv.text = "${tv.text.toString()}\n${it.toString()}"
+                 viewModel.loading.value = false
+
+             })*/
+
+        viewModel.login().let {
+            if (it == null) {
+                viewModel.loading.value = false
+                return@let
+            }
+            it?.observe(this,
+                Observer<LoginDto?> {
+                    tv.text = "${tv.text.toString()}\n${it.toString()}"
+                    viewModel.loading.value = false
+
+                })
+        }
+
     }
 }
+
+
