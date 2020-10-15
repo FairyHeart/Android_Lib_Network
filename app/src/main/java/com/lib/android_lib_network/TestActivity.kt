@@ -4,13 +4,15 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.observe
+import com.fairy.lib.network.RetrofitConfig
 import com.fairy.lib.network.RetrofitManager
-import com.fairy.lib.network.dto.ResultDto
 import com.fairy.lib.network.filterStatus
 import com.fairy.lib.network.rxjava.FilterSubscriber
 import com.fairy.lib.network.toBody
 import com.lib.android_lib_network.dto.LoginDto
+import com.lib.android_lib_network.observer.LoadingObserver
+import com.lib.android_lib_network.observer.ResultObserver
+import com.lib.android_lib_network.observer.ToastObserver
 import com.lib.android_lib_network.param.LoginParam
 import com.lib.network.R
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -52,28 +54,54 @@ class TestActivity : AppCompatActivity() {
         val viewModel by viewModels<LoginViewModel>()
 
         viewModel.loading.observe(this, LoadingObserver(this))
-
+        viewModel.toast.observe(this, ToastObserver(this))
         viewModel.loading.value = true
 
-        /* viewModel.login2().observe(this,
-             Observer<LoginDto?> {
-                 tv.text = "${tv.text.toString()}\n${it.toString()}"
-                 viewModel.loading.value = false
+//        viewModel.login2().observe(this,
+//            Observer<LoginDto?> {
+//                tv.text = "${tv.text.toString()}\n${it.toString()}"
+//                viewModel.loading.value = false
+//
+//            })
 
-             })*/
+        viewModel.login3().observe(this,
+            object : ResultObserver<LoginDto?>(
+                context = this,
+                loading = viewModel.loading,
+                toast = viewModel.toast
+            ) {
+                override fun onSuccess(value: LoginDto?) {
+                    tv.text = value.toString()
 
-        viewModel.login().let {
-            if (it == null) {
-                viewModel.loading.value = false
-                return@let
-            }
-            it?.observe(this,
-                Observer<LoginDto?> {
-                    tv.text = "${tv.text.toString()}\n${it.toString()}"
                     viewModel.loading.value = false
 
-                })
-        }
+                    RetrofitConfig.instance.addUrlParams("xtoken", value?.token)
+                    RetrofitManager.instance.reCreateRetrofit()
+
+                    if (value != null) {
+                        viewModel.getPays(value.entityId).observe(this@TestActivity, Observer {
+                            tv.text = "${tv.text.toString()}\n${it.toString()}"
+                        })
+                    }
+                }
+
+                override fun onFailure(errorCode: String?, errorMessage: String?) {
+
+                }
+            })
+
+//        viewModel.login().let {
+//            if (it == null) {
+//                viewModel.loading.value = false
+//                return@let
+//            }
+//            it?.observe(this,
+//                Observer<LoginDto?> {
+//                    tv.text = "${tv.text.toString()}\n${it.toString()}"
+//                    viewModel.loading.value = false
+//
+//                })
+//        }
 
     }
 }

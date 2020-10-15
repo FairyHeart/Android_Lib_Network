@@ -1,4 +1,4 @@
-package com.lib.android_lib_network
+package com.lib.android_lib_network.observer
 
 import android.content.Context
 import androidx.lifecycle.Observer

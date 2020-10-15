@@ -23,7 +23,7 @@ internal interface IRemoteService {
     @POST("weChat/v1/mobile_login")
     fun loginByPhone(
         @Body info: RequestBody
-    ): Observable<ResultDto<LoginDto?>>
+    ): Observable<ResultDto<LoginDto>>
 
 
     @Throws
@@ -37,8 +37,8 @@ internal interface IRemoteService {
      */
     @POST("order/v1/get_order_pay_always")
     fun getPays(
-        @Body info: RequestBody,
-        @Query("xtoken") token: String
-    ): Observable<ResultDto<MutableList<PayDto>?>>
+        @Body info: RequestBody
+//        @Query("xtoken") token: String
+    ): LiveData<ResultDto<MutableList<PayDto>?>>
 
 }

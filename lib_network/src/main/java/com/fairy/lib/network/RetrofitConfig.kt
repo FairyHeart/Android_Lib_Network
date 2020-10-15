@@ -3,6 +3,7 @@ package com.fairy.lib.network
 import okhttp3.Interceptor
 import retrofit2.CallAdapter
 import retrofit2.Converter
+import kotlin.math.log
 
 /**
  * app平台配置
@@ -13,7 +14,6 @@ import retrofit2.Converter
 class RetrofitConfig private constructor() {
 
     companion object {
-
         val instance: RetrofitConfig by lazy {
             RetrofitConfig()
         }
@@ -26,9 +26,9 @@ class RetrofitConfig private constructor() {
         private set
 
     /**
-     * 应用名字，输出日志使用
+     * 输出日志Tag
      */
-    var appName = "network"
+    var logName = "network"
         private set
 
     /**
@@ -39,19 +39,25 @@ class RetrofitConfig private constructor() {
     /**
      * 添加公共参数,添加到header中
      */
-    var headerParams: MutableMap<String, String>? = null
+    var headerParams: MutableMap<String, String?> = mutableMapOf()
         private set
 
     /**
-     * 添加公共参数,添加到参数中
+     * 添加公共参数,添加到URL末尾
      */
-    var urlParams: MutableMap<String, String>? = null
+    var urlParams: MutableMap<String, String?> = mutableMapOf()
         private set
 
     /**
-     * 添加拦截器
+     * 添加到公共参数到消息体，适用 Post(contentType=application/x-www-form-urlencoded)、Get 请求
      */
-    var networkInterceptors: MutableList<Interceptor>? = null
+    var bodyParams: MutableMap<String, String?> = mutableMapOf()
+        private set
+
+    /**
+     * 添加网络拦截器
+     */
+    var networkInterceptors: MutableList<Interceptor> = mutableListOf()
         private set
 
     /**
@@ -75,10 +81,10 @@ class RetrofitConfig private constructor() {
     }
 
     /**
-     * 应用名字，输出日志使用
+     * 输出日志Tag
      */
-    fun appName(appName: String): RetrofitConfig {
-        this.appName = appName
+    fun appName(logName: String): RetrofitConfig {
+        this.logName = logName
         return this
     }
 
@@ -93,24 +99,34 @@ class RetrofitConfig private constructor() {
     /**
      * 添加公共参数,添加到header中
      */
-    fun addHeaderParams(headerParams: MutableMap<String, String>): RetrofitConfig {
-        this.headerParams = headerParams
+    fun addHeaderParams(key: String, value: String?): RetrofitConfig {
+        this.headerParams[key] = value
         return this
     }
 
     /**
      * 添加公共参数,添加到参数中
      */
-    fun addUrlParams(urlParams: MutableMap<String, String>): RetrofitConfig {
-        this.urlParams = urlParams
+    fun addUrlParams(key: String, value: String?): RetrofitConfig {
+        this.urlParams[key] = value
+        return this
+    }
+
+    /**
+     * 添加到公共参数到消息体，适用 Post(contentType=application/x-www-form-urlencoded)、Get 请求
+     */
+    fun addBodyParams(key: String, value: String?): RetrofitConfig {
+        this.bodyParams[key] = value
         return this
     }
 
     /**
      * 添加拦截器
      */
-    fun addNetworkInterceptor(networkInterceptors: MutableList<Interceptor>): RetrofitConfig {
-        this.networkInterceptors = networkInterceptors
+    fun addNetworkInterceptor(interceptor: Interceptor): RetrofitConfig {
+        if (!networkInterceptors.contains(interceptor)) {
+            this.networkInterceptors.add(interceptor)
+        }
         return this
     }
 

@@ -12,7 +12,7 @@ import java.lang.reflect.Type
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
- *
+ * Retrofit 的Call适配成 LiveData
  *
  * @author: Fairy.
  * @date  : 2020/10/14.

@@ -23,7 +23,7 @@ private val gson = Gson()
 fun Any.toBody(): RequestBody {
     val param = gson.toJson(this)
     if (RetrofitConfig.instance.debug) {
-        Log.i(RetrofitConfig.instance.appName, param)
+        Log.i(RetrofitConfig.instance.logName, param)
     }
     return param.toRequestBody(contentType.toMediaTypeOrNull())
 }

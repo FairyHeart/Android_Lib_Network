@@ -9,7 +9,7 @@ import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 /**
- *
+ * LiveData数据源适配器
  *
  * @author: Fairy.
  * @date  : 2020/10/14.

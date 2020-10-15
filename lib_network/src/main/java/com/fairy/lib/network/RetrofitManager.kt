@@ -19,13 +19,29 @@ import java.util.concurrent.TimeUnit
 class RetrofitManager private constructor() {
 
     companion object {
-        val instance: RetrofitManager
-            get() = RetrofitManager()
+        val instance: RetrofitManager by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+            RetrofitManager()
+        }
     }
 
     private var mRetrofit: Retrofit
 
     init {
+        mRetrofit = createRetrofit()
+    }
+
+    /**
+     * 重新创建Retrofit
+     *      当配置参数更改之后，需要重新创建
+     */
+    fun reCreateRetrofit() {
+        this.mRetrofit = this.createRetrofit()
+    }
+
+    /**
+     * 创建Retrofit
+     */
+    private fun createRetrofit(): Retrofit {
         //添加公用参数到头部或者公用参数里面
         val commonBuilder = HttpCommonInterceptor.Builder()
         val headerParams = RetrofitConfig.instance.headerParams
@@ -40,14 +56,20 @@ class RetrofitManager private constructor() {
                 urlParams[it]?.let { it1 -> commonBuilder.addUrlParams(it, it1) }
             }
         }
+        val bodyParams = RetrofitConfig.instance.bodyParams
+        if (!bodyParams.isNullOrEmpty()) {
+            bodyParams.keys.forEach {
+                bodyParams[it]?.let { it1 -> commonBuilder.addBodyParams(it, it1) }
+            }
+        }
         val commonInterceptor = commonBuilder.build()
 
         val builder = OkHttpClient.Builder()
             .connectTimeout(5, TimeUnit.SECONDS)
             .writeTimeout(5, TimeUnit.SECONDS)
             .readTimeout(5, TimeUnit.SECONDS)
-            .addInterceptor(commonInterceptor)
-            .addNetworkInterceptor(GzipInterceptor())
+            .addInterceptor(commonInterceptor)//应用拦截器
+            .addNetworkInterceptor(GzipInterceptor())//网络拦截器
             .addNetworkInterceptor(LoggingInterceptor())
 
         //添加拦截器
@@ -72,7 +94,7 @@ class RetrofitManager private constructor() {
         if (RetrofitConfig.instance.callAdapterFactory != null) {
             retrofitBuilder.addCallAdapterFactory(RetrofitConfig.instance.callAdapterFactory!!)
         }
-        mRetrofit = retrofitBuilder.build()
+        return retrofitBuilder.build()
     }
 
     /**
