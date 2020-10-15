@@ -6,7 +6,9 @@ import okhttp3.Request
 import okhttp3.Response
 
 /**
- *
+ * 添加公用参数
+ *      Header参数所有请求都会添加
+ *      Get请求公用参数都会添加，Post请求只有contentType = application/x-www-form-urlencoded 才会添加
  *
  * @author: Fairy.
  * @date  : 2020-01-07.
@@ -20,11 +22,6 @@ class HttpCommonInterceptor : Interceptor {
         val oldRequest: Request = chain.request()
 
         // 新的请求
-        // 添加新的参数，添加到url 中
-        /*HttpUrl.Builder authorizedUrlBuilder = oldRequest.url().newBuilder()
-        .scheme(oldRequest.url().scheme())
-        .host(oldRequest.url().host());*/
-        // 新的请求
         val requestBuilder: Request.Builder = oldRequest.newBuilder()
         requestBuilder.method(oldRequest.method, oldRequest.body)
 
@@ -34,9 +31,9 @@ class HttpCommonInterceptor : Interceptor {
                 requestBuilder.header(key, value)
             }
         }
-//        requestBuilder.header("xtoken", AppPlatform.token)
         var newRequest: Request = requestBuilder.build()
-        //添加公用参数，添加到参数中
+
+        //添加公用参数，添加到参数中(Get添加到url上，Post添加到消息体里面)
         val method = oldRequest.method
         if (method.equals("Get", ignoreCase = true) && !mUrlParamsMap.isNullOrEmpty()) {
             var modifiedBuilder = oldRequest.url.newBuilder()
@@ -44,13 +41,9 @@ class HttpCommonInterceptor : Interceptor {
                 modifiedBuilder.addQueryParameter(key, value)
             }
             var modifiedUrl = modifiedBuilder.build()
-            newRequest = if (modifiedUrl != null) {
-                oldRequest.newBuilder().url(modifiedUrl).build()
-            } else {
-                requestBuilder.build()
-            }
+            newRequest = oldRequest.newBuilder().url(modifiedUrl).build()
         } else if (method.equals("Post", ignoreCase = true) && !mUrlParamsMap.isNullOrEmpty()) {
-            if (oldRequest.body is FormBody) {
+            if (oldRequest.body is FormBody) {//application/x-www-form-urlencoded 只有这一种格式下会添加公用参数，其他格式不会添加
                 val bodyBuilder = FormBody.Builder()
                 var formBody = oldRequest.body
                 for ((key, value) in mUrlParamsMap.entries) {
