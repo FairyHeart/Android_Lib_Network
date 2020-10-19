@@ -1,7 +1,5 @@
 package com.lib.android_lib_network
 
-import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.fairy.lib.network.dto.ResultDto
@@ -11,13 +9,11 @@ import com.fairy.lib.network.exception.NetworkException
  * LiveData拓展函数
  */
 @Throws
-fun <T> LiveData<ResultDto<T>>.filterStatus(context: Context): LiveData<T?>? {
+fun <T> LiveData<ResultDto<T>>.filterStatus(): LiveData<T?> {
     return Transformations.map(this) {
         if (!it.isSuccess()) {
-            if (!it.message.isNullOrBlank()) {
-                Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
-            }
-            return@map null
+            //外面捕获异常会奔溃
+            throw NetworkException(code = it.errorCode, message = it.message)
         }
         it.data
     }

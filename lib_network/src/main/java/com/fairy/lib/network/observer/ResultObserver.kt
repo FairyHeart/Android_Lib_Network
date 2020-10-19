@@ -1,7 +1,5 @@
-package com.lib.android_lib_network.observer
+package com.fairy.lib.network.observer
 
-import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.fairy.lib.network.dto.ResultDto
@@ -14,9 +12,8 @@ import com.fairy.lib.network.dto.ResultDto
  * @date  : 2020/10/14.
  */
 abstract class ResultObserver<T>(
-    private val context: Context,
     private val loading: MutableLiveData<Boolean>? = null,
-    private val toast: MutableLiveData<String>? = null
+    private val toast: MutableLiveData<String?>? = null
 ) : Observer<ResultDto<T>> {
     /**
      * Called when the data is changed.
