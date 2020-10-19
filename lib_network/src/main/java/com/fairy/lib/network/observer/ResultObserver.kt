@@ -33,7 +33,7 @@ abstract class ResultObserver<T>(
     }
 
 
-    abstract fun onSuccess(value: T?)
+    abstract fun onSuccess(it: T?)
 
     open fun onFailure(errorCode: String?, errorMessage: String?) {}
 }
