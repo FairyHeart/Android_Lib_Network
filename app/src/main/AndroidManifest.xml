@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name="com.lib.android_lib_network.scope.ScopeRetrofitActivity"></activity>
         <activity android:name="com.lib.android_lib_network.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,8 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.lib.android_lib_network.TestActivity"/>
-
+        <activity android:name="com.lib.android_lib_network.TestActivity" />
     </application>
 
 </manifest>

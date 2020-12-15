@@ -6,9 +6,9 @@ import com.lib.android_lib_network.dto.LoginDto
 import com.lib.android_lib_network.dto.PayDto
 import io.reactivex.Observable
 import okhttp3.RequestBody
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 /**
  *
@@ -41,4 +41,16 @@ internal interface IRemoteService {
 //        @Query("xtoken") token: String
     ): LiveData<ResultDto<MutableList<PayDto>?>>
 
+
+    @Throws
+    @POST("weChat/v1/mobile_login")
+    suspend fun loginByPhoneScope(
+        @Body info: RequestBody
+    ): Response<ResultDto<LoginDto?>>
+
+    @Throws
+    @POST("weChat/v1/mobile_login")
+    suspend fun loginByPhoneScope2(
+        @Body info: RequestBody
+    ): ResultDto<LoginDto?>
 }

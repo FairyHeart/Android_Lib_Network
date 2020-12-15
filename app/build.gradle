@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 def cfg = rootProject.ext.android
 def libs = rootProject.ext.dependencies
@@ -19,6 +20,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    dataBinding {
+        enabled = true
+    }
+
     buildTypes {
         debug {
             minifyEnabled false
@@ -27,6 +32,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
     }
 
     kotlinOptions {
@@ -46,7 +56,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:${libs.espresso_core_version}"
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
-//    implementation 'androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-core-ktx:2.2.0'
 
     //GSon
     implementation "com.google.code.gson:gson:${libs.gson_version}"
@@ -61,7 +71,8 @@ dependencies {
 
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:${libs.retrofit_version}"
-    implementation "com.squareup.retrofit2:converter-gson:${libs.retrofit_version}"//转换器，请求结果转换成Model
+    implementation "com.squareup.retrofit2:converter-gson:${libs.retrofit_version}"
+//转换器，请求结果转换成Model
     implementation "com.squareup.retrofit2:adapter-rxjava2:${libs.retrofit_version}"//配合RxJava 使用
 
     implementation 'androidx.fragment:fragment-ktx:1.2.5'

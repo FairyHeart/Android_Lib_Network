@@ -35,8 +35,8 @@ class TestApplication : Application() {
 //            .addNetworkInterceptor(LoggingInterceptor())//添加网络拦截器，默认支撑LoggingInterceptor和GzipInterceptor
 //            .addConverterFactory(GsonConverterFactory.create())//Json转换器，默认为Gson
 //            .addCallAdapterFactory(LiveDataCallAdapterFactory() {})//添加数据源适配器，默认支撑LiveData和RxJava
-            .addCallAdapterFactory(LiveDataCallAdapterFactory(ThreadSchedulers.MAIN_THREAD) {
-                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
-            })
+//            .addCallAdapterFactory(LiveDataCallAdapterFactory(ThreadSchedulers.MAIN_THREAD) {
+//                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+//            })
     }
 }
