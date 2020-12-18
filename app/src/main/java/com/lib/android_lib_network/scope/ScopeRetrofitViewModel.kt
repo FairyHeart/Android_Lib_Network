@@ -60,15 +60,19 @@ class ScopeRetrofitViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
-    val liveData = liveData<LoginDto?>(Dispatchers.IO) {
+    val liveData = liveData(Dispatchers.IO) {
+        emit(Response.loading())
         try {
             val param = LoginParam("13777820327", "123456", "1001")
             val result = remoteService.loginByPhoneScope2(param.toBody())
             if (result.isSuccess()) {
-                emit(result.data)
+                emit(Response.success(result.data))
+            } else {
+                emit(Response.error(result.message, result.errorCode))
             }
         } catch (e: Throwable) {
             e.printStackTrace()
+            emit(Response.error(e.message, null))
         }
     }
 

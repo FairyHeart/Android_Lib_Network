@@ -1,9 +1,11 @@
 package com.lib.android_lib_network.scope
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.lib.network.R
 import com.lib.network.databinding.ActivityScopeRetrofitBinding
@@ -28,8 +30,24 @@ class ScopeRetrofitActivity : AppCompatActivity() {
         binding.vm = vm
         binding.lifecycleOwner = this
         binding.executePendingBindings()
-        
-        vm.login()
+
+//        vm.login()
 //        vm.login2()
+
+        vm.liveData.observe(this, Observer {
+            it?.let {
+                when (it.status) {
+                    Status.LOADING -> {
+                        Toast.makeText(this, "loading", Toast.LENGTH_SHORT).show()
+                    }
+                    Status.ERROR -> {
+                        Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
+                    }
+                    Status.SUCCESS -> {
+                        Toast.makeText(this, "success", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
     }
 }

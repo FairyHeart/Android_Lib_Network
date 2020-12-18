@@ -107,4 +107,7 @@ class RetrofitManager private constructor() {
         return mRetrofit.create(service)
     }
 
+    inline fun <reified T> createService(service: Class<T>): T {
+        return create(service)
+    }
 }
