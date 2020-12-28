@@ -34,7 +34,7 @@ class ScopeRetrofitActivity : AppCompatActivity() {
 //        vm.login()
 //        vm.login2()
 
-        vm.liveData.observe(this, Observer {
+        vm.result?.observe(this, Observer {
             it?.let {
                 when (it.status) {
                     Status.LOADING -> {
